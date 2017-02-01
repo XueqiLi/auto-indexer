@@ -47,6 +47,8 @@ class Webpage:
     """ Webpage present a webpage. Webpage only content url or part of url.
     """
     def __init__(self, url, full=False):
+        if url[-1] == "/":
+            url = url[:-1]
         self.url = url
         self.full = full
 
@@ -110,7 +112,6 @@ class HTML:
         In here we will only look at where is insit the <>, since we only looking for a tag and
         get it herf. Thus, it will return None if there is no tag in input_str.
         """
-        # Problem: more than one tig might in one line.
         def get_token(input_str):
             """ An token Generator. """
             while len(input_str) >= 1:
@@ -167,17 +168,31 @@ class HTML:
     def read_attribute_value(self, get_token):
         """ Read the attribute value. """
         # might someproblem here
-        self.read_str(get_token) # read "
-        incoming = self.read_str(get_token)
-        if incoming == ' ': # Incase of attr = "somgthing" form.
-            return self.read_attribute_value(get_token)
-        if incoming[-1] != '\"':
-            incoming = incoming[:-1]
-            return incoming + self.read_attribute_value(get_token)
-        else:
-            incoming = incoming[:-1]
-            return incoming
+        # self.read_str(get_token) # read "
+        # incoming = self.read_str(get_token)
+        # print(incoming)
+        # if incoming[0] == ' ': # Incase of attr = "somgthing" form.
+        #     if incoming[1] == '\"':
+        #         return self.read_attribute_value(get_token)
+        # if incoming[-1] != '\"':
+        #     incoming = incoming[:-1]
+        #     return incoming + self.read_attribute_value(get_token)
+        # else:
+        #     incoming = incoming[:-1]
+        #     return incoming
 
+        incoming = next(get_token)
+        def read_token_till_quotation(get_token):
+            """ Read the token untill meet a quotation mark. """
+            incoming = next(get_token)
+            while incoming != '\"':
+                return incoming + read_token_till_quotation(get_token)
+            return ""
+
+        if incoming == '\"':
+            return read_token_till_quotation(get_token)
+        else:
+            return self.read_attribute_value(get_token)
 
     def read_str(self, get_token):
         """ Read and return a string untill it meet anything in the stop list. """
@@ -256,6 +271,7 @@ class Website:
         return 'Website({0}{1})'.format(repr(self.webpage), branches_str)
 
     def ls(self):
+        """ List all subwebpages. """
         for subwebpage in self.subwebpages:
             print(subwebpage.webpage.url)
 
@@ -278,8 +294,7 @@ class Website:
                 if token == '.':
                     return self
         subwebpages = Webpage(self.full_url(), True).get_subwebpage()
-        print("* Find linked webpages as following *")
-        print(subwebpages)
+        print("* Find {0} Webpages *".format(len(subwebpages)))
         self.subwebpages = [Website(subwebpage, (), self) for subwebpage in subwebpages]
         for subwebpage in self.subwebpages:
             if subwebpage.full_url() in Website.website_building_cache:
@@ -316,6 +331,7 @@ class Website:
         if self.subwebpages == []:
             web_file = Webpage(self.full_url(), True)
             web_file.download(self.webpage.url)
+            print("*** [Download:{0}]***".format(self.full_url()))
         else:
             for subwebsite in self.subwebpages:
                 if subwebsite. subwebpages == []:
