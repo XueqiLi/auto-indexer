@@ -24,7 +24,7 @@ Made for me to download file in http://inst.eecs.berkeley.edu/~cs61b/fa16/hw
 - Somehow it ignore "Makefile" file.
 - Website.download() is not finish. Now it will only download to current folder.
 - Create folder with no content as a file (intentionally).
-- Cannot use in shell as 'python3 auto-indexer [website] [path]' (not yet finish).
+- Cannot use in shell as `python3 auto-indexer [website] [path]` (not yet finish).
 
 ## How does it work
 I do not know how others auto-indexer work. This is just how I think an auto-index can work.
