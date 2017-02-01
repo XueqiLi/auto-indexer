@@ -40,8 +40,13 @@ import urllib, urllib.request, urllib.error
 
 
 def auto_indexer(url, directorie="~", webname="auto-indexer"):
-    """ Use the given URL, create a Website, and download it. """
-    return Website(Webpage(url), True).get_subwebsite().download(directorie, webname)
+    """ Use the given URL, create a Website, and download it.
+        directorie and webname not work for now.
+    """
+    web = Webpage(url, True)
+    website = Website(web)
+    website.get_subwebsite()
+    website.download()
 
 class Webpage:
     """ Webpage present a webpage. Webpage only content url or part of url.
