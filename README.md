@@ -4,6 +4,7 @@ Made for me to download file in http://inst.eecs.berkeley.edu/~cs61b/fa16/hw
 ## Usage
     # Simpile step:
     >>> auto_indexer("http://init-url.com")
+    # Print many things
     0
     # File will be downloaded
 
@@ -13,15 +14,16 @@ Made for me to download file in http://inst.eecs.berkeley.edu/~cs61b/fa16/hw
     >>> web
     Website(Webpage("http://init-url.com"))
     >>> web = web.get_subwebsite()
+    # Will print webpage url and how many subpage in it
     >>> web
     Website(Webpage("http://init-url.com"),[Website(Webpage("code")), Website(Webpage("homework"
     ), [Website(Webpage("hw01")), Website(Webpage("hw02"))])])
     >>> web.download()
+    # Will print downloaded file url
     0
     # File will be downloaded
     
 ## Problem
-- Somehow it ignore "Makefile" file.
 - Website.download() is not finish. Now it will only download to current folder.
 - Create folder with no content as a file (intentionally).
 - Cannot use in shell as `python3 auto-indexer [website] [path]` (not yet finish).
